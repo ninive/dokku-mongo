@@ -121,9 +121,11 @@ dokku mongo:link lolipop playground
 # and the following will be set on the linked application by default
 #
 #   MONGO_URL=mongodb://lolipop:SOME_PASSWORD@dokku-mongo-lolipop:27017/lolipop
+#   JDBC_MONGO_URL=mongodb://dokku-mongo-lolipop:27017/lolipop?user=lolipop&password=SOME_PASSWORD
 #
 # NOTE: the host exposed here only works internally in docker containers. If
 # you want your container to be reachable from outside, you should use `expose`.
+# As well, we shall omit the JDBC url from all following examples for brevity.
 
 # another service can be linked to your app
 dokku mongo:link other_service playground
