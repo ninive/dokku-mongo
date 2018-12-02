@@ -2,6 +2,7 @@
 source "$(dirname "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)")/config"
 set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
 source "$PLUGIN_BASE_PATH/common/functions"
+source "$(dirname "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)")/common-functions"
 source "$(dirname "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)")/functions"
 
 service-connect-admin-cmd() {
@@ -14,9 +15,8 @@ service-connect-admin-cmd() {
 
   [[ -z "$SERVICE" ]] && dokku_log_fail "Please specify a name for the service"
   verify_service_name "$SERVICE"
-  SERVICE_ROOT="$PLUGIN_DATA_ROOT/$SERVICE"
   SERVICE_NAME="$(get_service_name "$SERVICE")"
-  PASSWORD="$(cat "$SERVICE_ROOT/ROOTPASSWORD")"
+  PASSWORD="$(service_root_password "$SERVICE")"
   has_tty && SERVICE_TTY_OPTS="-t"
 
   docker exec -i $SERVICE_TTY_OPTS "$SERVICE_NAME" mongo -u admin -p "$PASSWORD" --authenticationDatabase admin "$SERVICE"
